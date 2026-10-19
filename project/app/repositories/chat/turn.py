@@ -1,9 +1,10 @@
 from datetime import datetime
 
-from sqlalchemy import select, exists
+from sqlalchemy import select, exists, and_
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
-from models.models import ConversationTurn, Conversation
+from project.models.models import ConversationTurn, Conversation
 
 
 class ConversationTurnRepository:
@@ -37,7 +38,8 @@ class ConversationTurnRepository:
         2、turn的时间是否比当前时间小
         3、会话模式是AI
         """
-        result = await self.session.execute(
+        running_turn = aliased(ConversationTurn)
+        results = await self.session.execute(
             select(ConversationTurn, Conversation)
             .join(
                 Conversation,
@@ -46,14 +48,22 @@ class ConversationTurnRepository:
             .where(
                 ConversationTurn.status == "COLLECTING",
                 ConversationTurn.collect_until <= now,
-                Conversation.mode == "AI"
+                Conversation.mode == "AI",
+                ~exists(
+                    select(1).where(
+                        and_(
+                            running_turn.conversation_id == ConversationTurn.conversation_id,
+                            running_turn.status == "RUNNING"
+                        )
+                    )
+                )
             )
             .order_by(ConversationTurn.collect_until, ConversationTurn.created_at)
             .limit(1)
             .with_for_update()
         )
 
-        return result.tuples().one_or_none()
+        return results.tuples().one_or_none()
 
     async def find_turn_and_conversation_by_turn_id(self, turn_id: str) -> tuple[ConversationTurn, Conversation]:
         result = await self.session.execute(
@@ -80,3 +90,4 @@ class ConversationTurnRepository:
             )
         )
         return list(result.all())
+

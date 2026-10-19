@@ -3,18 +3,19 @@ from typing import Any
 from select import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.repositories.chat.message import MessageRepository
-from app.schemas.chat.message import ChatMessageRequest
-from app.schemas.event import RealTimeOutBoxType
-from app.services.chat.conversation import ConversationService
-from app.services.chat.turn import TurnService
-from app.services.realtime import RealTimeOutBoxService, STAFF_CHANNEL, build_message_created_data
+from project.app.repositories.chat.message import MessageRepository
+from project.app.schemas.chat.message import ChatMessageRequest
+from project.app.schemas.event import RealTimeOutBoxType
+from project.app.services.chat.conversation import ConversationService
+from project.app.services.chat.turn import TurnService
+from project.app.services.realtime import RealTimeOutBoxService, STAFF_CHANNEL, build_message_created_data
 
-from common.utils import get_uid, get_utcnow
-from models.models import Conversation, Message
+from project.common.utils import get_uid, get_utcnow
+from project.models.models import Conversation, Message
 
 
 class MessageService:
+
     def __init__(
             self,
             session: AsyncSession,

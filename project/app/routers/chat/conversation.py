@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Header
 
-from app.schemas.chat.conversation import CurrentConversationResponse, ConversationDetailResponse
+from project.app.schemas.chat.conversation import CurrentConversationResponse, ConversationDetailResponse
 from project.app.dependencies import ConversationServiceDep, get_auth_service
 
 router = APIRouter(prefix="/api/v1", tags=["聊天会话"])
@@ -22,7 +22,7 @@ async def get_current_conversation(conversation_service: ConversationServiceDep,
     authorized_user = get_auth_service().get_authorized_user(authorization, "customer")
 
     # 2、获得接口数据模型的格式字典
-    result = conversation_service.get_current_conversation(authorized_user.user_id)
+    result = await conversation_service.get_current_conversation(authorized_user.user_id)
 
     return result
 

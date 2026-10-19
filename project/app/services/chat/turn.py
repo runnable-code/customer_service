@@ -3,13 +3,12 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.repositories.chat.conversation import ConversationRepository
-from app.repositories.chat.message import MessageRepository
-from app.repositories.chat.turn import ConversationTurnRepository
-from app.services.chat.message import MessageService
-from common.config import Settings
-from common.utils import get_utcnow
-from models.models import Message, Conversation, ConversationTurn
+from project.app.repositories.chat.conversation import ConversationRepository
+from project.app.repositories.chat.message import MessageRepository
+from project.app.repositories.chat.turn import ConversationTurnRepository
+from project.common.config import Settings
+from project.common.utils import get_utcnow
+from project.models.models import Message, Conversation, ConversationTurn
 
 
 class TurnService:
@@ -56,7 +55,7 @@ class TurnService:
             user_id=conversation.user_id,
             status="COLLECTING",
             collect_until=now + delay,
-            start_revision=conversation.input_revision + 1,
+            start_revision=conversation.answered_revision + 1,
             max_collect_until=now + timedelta(milliseconds=self.settings.message_merge_max_wait_ms)
         )
 
@@ -82,7 +81,7 @@ class TurnService:
         claimed_turn.status = "RUNNING"
         claimed_turn.snapshot_revision = conversation.input_revision
         claimed_turn.locked_by = worker_id
-        claimed_turn.locked_until = now + timedelta(self.settings.ai_worker_lease_seconds)
+        claimed_turn.locked_until = now + timedelta(seconds=self.settings.ai_worker_lease_seconds)
         claimed_turn.attempts += 1
         claimed_turn.started_at = claimed_turn.started_at or now
 

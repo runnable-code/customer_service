@@ -3,14 +3,14 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.repositories.admin.admin import AdminMetricsRepository
-from app.services.admin.admin import AdminMetricsService
-from app.services.admin.auth import AuthService
-from app.services.admin.handoff import HandoffService
-from app.services.chat.message import MessageService
-from app.services.chat.turn import TurnService
-from app.services.realtime import RealTimeOutBoxService
-from infrastructure.db import get_db_session
+from project.app.repositories.admin.admin import AdminMetricsRepository
+from project.app.services.admin.admin import AdminMetricsService
+from project.app.services.admin.auth import AuthService
+from project.app.services.admin.handoff import HandoffService
+from project.app.services.chat.message import MessageService
+from project.app.services.chat.turn import TurnService
+from project.app.services.realtime import RealTimeOutBoxService
+from project.infrastructure.db import get_db_session
 from project.app.services.chat.conversation import ConversationService
 
 

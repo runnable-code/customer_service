@@ -8,9 +8,9 @@ ENV_FILE = Path(__file__).resolve().parents[2] / ".env"
 
 class Settings(BaseSettings):
     database_url: str = (
-        "postgresql+psycopg://customer_service:customer_service@192.168.200.188:5432/customer_service"
+        "postgresql+psycopg://customer_service:customer_service@192.168.200.88:5432/customer_service"
     )
-    redis_url: str = "redis://192.168.200.188:6379/0"
+    redis_url: str = "redis://192.168.200.88:6379/0"
     ai_service_url: str = "http://127.0.0.1:8002"
     ai_timeout_seconds: int = 30
     internal_service_token: str = "customer-service"

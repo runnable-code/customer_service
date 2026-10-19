@@ -3,12 +3,12 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.repositories.chat.conversation import ConversationRepository
-from app.repositories.chat.message import MessageRepository
-from app.repositories.chat.turn import ConversationTurnRepository
-from common.config import get_settings
-from common.utils import get_utcnow
-from models.models import Conversation, Message
+from project.app.repositories.chat.conversation import ConversationRepository
+from project.app.repositories.chat.message import MessageRepository
+from project.app.repositories.chat.turn import ConversationTurnRepository
+from project.common.config import get_settings
+from project.common.utils import get_utcnow
+from project.models.models import Conversation, Message
 
 
 class ConversationService:
@@ -27,7 +27,7 @@ class ConversationService:
         conversation = await self.ensure_effective_conversion(user_id)
 
         # 2、当前是否有轮消息
-        is_processing = self.turn_repository.is_activate_turn(conversation.id)
+        is_processing = await self.turn_repository.is_activate_turn(conversation.id)
 
         # 3、提交数据
         await self.session.commit()

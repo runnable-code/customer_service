@@ -2,8 +2,8 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.repositories.chat.message import MessageRepository
-from app.services.admin.handoff import HandoffService
+from project.app.repositories.chat.message import MessageRepository
+from project.app.services.admin.handoff import HandoffService
 from project.app.services.realtime import RealTimeOutBoxService
 from project.common.utils import get_uid, get_utcnow
 from project.models.models import Conversation, ConversationTurn, Message, Handoff
@@ -34,6 +34,8 @@ class AIResultService:
 
         self.message_repo.add_message(message)
         conversation.last_active_at = get_utcnow()
+
+        await self.message_repo.session.flush()
 
         self.real_service.add_message_created_events(
             conversation,

@@ -4,15 +4,16 @@ import os
 import socket
 from typing import Any
 
-from app.schemas.admin.user import CurrentUser
-from app.services.admin.auth import AuthService
-from app.services.chat.turn import TurnService
-from common.config import get_settings
-from common.event_loop import run_async
-from infrastructure.db import session_factory
-from worker.ai.gateway import AIServiceGateway
-from worker.ai.parser import AIEventParser
-from worker.ai.result import AIResultService
+from project.app.schemas.admin.user import CurrentUser
+from project.app.services.admin.auth import AuthService
+from project.app.services.chat.turn import TurnService
+from project.common.config import get_settings
+from project.common.event_loop import run_async
+from project.infrastructure.db import session_factory
+
+from project.worker.ai.parser import AIEventParser
+from project.worker.ai.result import AIResultService
+from project.worker.ai.gateway import AIServiceGateway
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

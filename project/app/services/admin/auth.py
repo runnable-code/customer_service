@@ -1,8 +1,8 @@
 import jwt
 from fastapi import HTTPException, status
 
-from app.schemas.admin.user import CurrentUser
-from common.config import get_settings
+from project.app.schemas.admin.user import CurrentUser
+from project.common.config import get_settings
 
 
 class AuthService:
@@ -38,7 +38,7 @@ class AuthService:
         token = self._obtain_token(authorization)
 
         # 2、根据令牌解密用户信息
-        current_user = self._decode_user_information(token)
+        current_user = self.decode_user_information(token)
 
         return current_user
 
@@ -55,7 +55,7 @@ class AuthService:
 
         return authorization.split(" ", maxsplit=1)[1]
 
-    def _decode_user_information(self, token: str) -> CurrentUser:
+    def decode_user_information(self, token: str) -> CurrentUser:
         """
         根据令牌解密用户信息
         :return: 当前用户对象

@@ -76,8 +76,8 @@ async def start_run(request: dict[str, Any]) -> dict[str, Any]:
     return event
 
 
-@app.post("/internal/v1/agent/runs/{run_id}/commit")
-async def commit_run(
+@app.post("/internal/v1/agent/runs/{run_id}/confirm")
+async def confirm_run(
         run_id: str
 ) -> dict[str, Any]:
     """提交已经准备好的模拟业务决策。"""

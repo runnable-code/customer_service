@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.models import Message, Conversation
+from project.models.models import Message, Conversation
 
 
 class MessageRepository:

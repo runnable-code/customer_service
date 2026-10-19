@@ -23,9 +23,8 @@ async def realtime_socket(
     # 1. 验证前端发送的访问令牌
     try:
         auth_message = await websocket.receive_json()
-        current_user = get_auth_service().decode_access_token(
-            str(auth_message["token"])
-        )
+        current_user = get_auth_service().decode_user_information(str(auth_message["token"]))
+
     except (KeyError, TypeError):
         await websocket.close(401, "Invalid access token")
         return
